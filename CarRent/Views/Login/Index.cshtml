@@ -1,0 +1,45 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CS:GO Rehberi Admin Paneli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="~/Content/web/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <meta name="keywords" content="" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href="~/Content/Login/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="padding-all">
+        <div class="header">
+            <h1>Bi Araba Kullanıcı Girişi</h1>
+        </div>
+
+        <div class="design-w3l">
+            <div class="mail-form-agile">
+                @if (ViewBag.Sonuc != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.Sonuc
+                    </div>
+                }
+                <form action="#" method="post">
+                    @using (Html.BeginForm())
+                    {
+                        <input type="text" name="eposta" placeholder="Email" required="" />
+                        <input type="password" name="sifre" class="padding" placeholder="Şifre" required="" />
+                        <input type="submit" value="login">
+                    }
+                </form>
+            </div>
+            <div class="clear"> </div>
+        </div>
+    </div>
+</body>
+</html>

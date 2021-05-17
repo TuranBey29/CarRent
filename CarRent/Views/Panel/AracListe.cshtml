@@ -1,0 +1,297 @@
+﻿@model  AnasayfaPageModel
+@{
+    ViewBag.Title = "Arac Liste";
+    Layout = "~/Views/Shared/_panelLayout.cshtml";
+}
+@if (TempData["mesaj"] != null)
+{
+    <div class="alert alert-info" role="alert">
+
+        @TempData["mesaj"]
+
+    </div>
+}
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="card-title">@ViewBag.title</h3>
+            </div>
+            <div class="col-md-2">
+                <a type="button" href="/Panel/AracEkle" class="btn btn-block btn-primary ">Araç Ekle</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table id="myTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Araç Resim</th>
+                    <th>Araç Marka</th>
+                    <th>Araç Model</th>
+                    <th>Araç Günlük Fiyat</th>
+                    <th>Araç Depozito</th>
+                    <th>Araç Km Sınırı</th>
+                    <th>Araç Sınıf</th>
+                    <th>Araç Vites Tür</th>
+                    <th>Araç Yakıt Tür</th>
+                    <th>Düzenle / Sil</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var arac in Model.Arac)
+                {
+                    <tr>
+                        <td>@arac.aracID</td>
+                        <td><img src="~/Content/images/@(arac.aracResim)" style="width:130px; height:90px; object-fit:cover;"></td>
+                        <td>@arac.AracModel.AracMarka.marka</td>
+                        <td>@arac.AracModel.model</td>
+                        <td>@arac.gunlukFiyat</td>
+                        <td>@arac.depozito</td>
+                        <td>@arac.kmSinir</td>
+                        <td>@arac.AracSinif.sinif</td>
+                        <td>@arac.AracVitesTur.vitesTur</td>
+                        <td>@arac.AracYakitTur.tur</td>
+                        <td>
+                            <div class="btn-group">
+                                <a type="button" class="btn btn-default btn-outline-primary" data-toggle="modal" data-target="#duzenlemeModal@(arac.aracID)"><i class="fas fa-pen-square"></i></a>
+                                <a type="button" class="btn btn-default btn-outline-danger" data-toggle="modal" data-target="#uyariModal@(arac.aracID)"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="modal fade" id="uyariModal@(arac.aracID)" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <img src="~/Content/images/@arac.aracResim" style="height:100%;width:100%; object-fit:cover" />
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 class="modal-title">Emin misiniz?</h4>
+                                            <p>Silinmek istenilen araç : @arac.AracModel.AracMarka.marka - @arac.AracModel.model</p>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                                            <a href="/Panel/AracSil/@arac.aracID" type="button" class="btn btn-primary">Onay</a>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            @using (Html.BeginForm("AracDuzenle", "Panel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <div class="modal fade" id="duzenlemeModal@(arac.aracID)" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Düzenle</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <!-- checkbox -->
+                                                        <label>Araç Fiyatlandırma</label>
+                                                        <div class="form-group">
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <i class="fas fa-dollar-sign"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input name="gunlukFiyat" type="number" class="form-control" placeholder="Günlük Fiyat" value="@arac.gunlukFiyat" autocomplete="off" required>
+                                                            </div>
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <i class="fas fa-dollar-sign"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input name="depozito" type="number" class="form-control" placeholder="Depozito" value="@arac.depozito" autocomplete="off" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <label>Araç Km Sınır</label>
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <i class="fas fa-car"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input name="kmSinir" type="number" class="form-control" placeholder="Km Sınır" value="@arac.depozito" autocomplete="off" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Araba Marka</label>
+                                                            <select class="form-control select2bs4" id="AracMarka" style="width: 100%;" name="aracMarka">
+                                                                @foreach (var item in Model.AracMarka)
+                                                                {
+                                                                    if (arac.AracModel.AracMarka.aracMarkaID == item.aracMarkaID)
+                                                                    {
+                                                                        <option value="@item.aracMarkaID" selected>@item.marka</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@item.aracMarkaID">@item.marka</option>
+                                                                    }
+
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Araba Model</label>
+                                                            <select class="form-control select2bs4" id="AracModel" style="width: 100%;" name="aracModelID">
+                                                                @foreach (var item in Model.AracModel)
+                                                                {
+                                                                    if (arac.AracModel.aracModelID == item.aracModelID)
+                                                                    {
+                                                                        <option value="@item.aracModelID" selected>@item.model</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@item.aracModelID">@item.model</option>
+                                                                    }
+
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <!-- select -->
+                                                        <div class="form-group">
+                                                            <label>Yakıt Sınıf</label>
+                                                            <select class="custom-select" name="aracYakitTurID">
+                                                                @foreach (var item in Model.AracYakitTur)
+                                                                {
+                                                                    if (arac.aracYakitTurID == item.aracYakitTurID)
+                                                                    {
+                                                                        <option value="@item.aracYakitTurID" selected>@item.tur</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@item.aracYakitTurID">@item.tur</option>
+                                                                    }
+
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <!-- select -->
+                                                        <div class="form-group">
+                                                            <label>Vites Tür</label>
+                                                            <select class="custom-select" name="aracVitesTurID">
+                                                                @foreach (var item in Model.AracVitesTur)
+                                                                {
+                                                                    if (arac.aracVitesTurID == item.aracVitesTurID)
+                                                                    {
+                                                                        <option value="@item.aracVitesTurID" selected>@item.vitesTur</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@item.aracVitesTurID">@item.vitesTur</option>
+                                                                    }
+
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <!-- select -->
+                                                        <div class="form-group">
+                                                            <label>Araç Sınıf</label>
+                                                            <select class="custom-select" name="aracSinifID">
+                                                                @foreach (var item in Model.AracSinif)
+                                                                {
+                                                                    if (arac.aracSinifID == item.aracSinifID)
+                                                                    {
+                                                                        <option value="@item.aracSinifID" selected>@item.sinif</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@item.aracSinifID">@item.sinif</option>
+                                                                    }
+
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-switch">
+                                                        @if (arac.reklam == true)
+                                                        {
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch1" name="reklam" value="true" checked>
+                                                            <label class="custom-control-label" for="customSwitch1">Popüler araç bölümünde göster</label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch1" name="reklam" value="true">
+                                                            <label class="custom-control-label" for="customSwitch1">Popüler araç bölümünde göster</label>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-switch">
+                                                        @if (arac.indirim == true)
+                                                        {
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch2" name="indirim" value="true" checked>
+                                                            <label class="custom-control-label" for="customSwitch2">İndirimli araç bölümünde göster</label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch2" name="indirim" value="true">
+                                                            <label class="custom-control-label" for="customSwitch2">İndirimli araç bölümünde göster</label>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <img src="~/Content/images/@(arac.aracResim)" style="width:130px; height:90px; object-fit:cover;">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <!-- <label for="customFile">Custom File</label> -->
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="customFile" name="aracResim">
+                                                                <label class="custom-file-label" for="customFile">Araç Resim</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <input name="aracID" type="hidden" class="form-control" value="@arac.aracID">
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

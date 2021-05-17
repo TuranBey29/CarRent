@@ -1,0 +1,129 @@
+﻿@model List<CarRent.Models.AracSinif>
+@{
+    ViewBag.Title = "Sinif";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+@if (TempData["mesaj"] != null)
+{
+    <div class="alert alert-info" role="alert">
+
+        @TempData["mesaj"]
+
+    </div>
+}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Tür Ekle</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            @using (Html.BeginForm("SinifEkle", "Panel", FormMethod.Post))
+            {
+                <form class="form-horizontal">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Tür Ad</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="sinif" placeholder="Ad">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info">Ekle</button>
+                    </div>
+                    <!-- /.card-footer -->
+                </form>
+            }
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card card-info">
+            <div class="card-header">
+                <div class="row">
+                    <h3 class="card-title">@ViewBag.title</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="myTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Sınıf Adı</th>
+                            <th>Düzenle / Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.aracSinifID</td>
+                                <td>@item.sinif</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a type="button" class="btn btn-default btn-outline-primary" data-toggle="modal" data-target="#duzenlemeModal@(item.aracSinifID)"><i class="fas fa-pen-square"></i></a>
+                                        <a type="button" class="btn btn-default btn-outline-danger" data-toggle="modal" data-target="#uyariModal@(item.aracSinifID)"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                    <div class="modal fade" id="uyariModal@(item.aracSinifID)" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Emin misiniz?</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Silinmek istenilen sınıf : @item.sinif</p>
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                                                    <a href="/Panel/SinifSil/@item.aracSinifID" type="button" class="btn btn-primary">Onay</a>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    @using (Html.BeginForm("SinifDuzenle", "Panel", FormMethod.Post))
+                                    {
+                                        <div class="modal fade" id="duzenlemeModal@(item.aracSinifID)" style="display: none;" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Düzenle</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group row">
+                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Tür Ad</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="sinif" placeholder="@item.sinif" value="@item.sinif">
+                                                                <input type="hidden" class="form-control" name="id" value="@item.aracSinifID">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                                                            <button type="submit" class="btn btn-info">Düzenle</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

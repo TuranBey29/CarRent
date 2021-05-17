@@ -1,0 +1,101 @@
+﻿@model CarRent.Models.SiteAyar
+@{
+    ViewBag.Title = "SiteAyar";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+@if (TempData["mesaj"] != null)
+{
+    <div class="alert alert-info" role="alert">
+
+        @TempData["mesaj"]
+
+    </div>
+}
+<div class="col-md-10">
+    <div class="card card-warning">
+        <div class="card-header">
+            <h3 class="card-title">Site Ayar</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            @using (Html.BeginForm("SiteAyarDuzenle", "Panel", FormMethod.Post))
+            {
+                <form role="form">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- textarea -->
+                            <div class="form-group">
+                                <label>Footer Yazı</label>
+                                <textarea class="form-control" rows="3" placeholder="Footer Yazi" name="footerYazi">@Model.footerYazi</textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- textarea -->
+                            <div class="form-group">
+                                <label>Hakkımda Yazı</label>
+                                <textarea class="form-control" rows="3" placeholder="Hakkimda Yazi" name="hakkimdaYazi">@Model.hakkimdaYazi</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.populerArabaDurum == true)
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1" name="populerArabaDurum" value="true" checked>
+                                <label class="custom-control-label" for="customSwitch1">Popüler araç bölümünde göster</label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1" name="populerArabaDurum" value="true">
+                                <label class="custom-control-label" for="customSwitch1">Popüler Araç bölümünde göster</label>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.indirimDurum == true)
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2" name="indirimDurum" value="true" checked>
+                                <label class="custom-control-label" for="customSwitch2">İndirimli Araç bölümünde göster</label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2" name="indirimDurum" value="true">
+                                <label class="custom-control-label" for="customSwitch2">İndirimli Araç bölümünü göster</label>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.hakkimdaDurum == true)
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch3" name="hakkimdaDurum" value="true" checked>
+                                <label class="custom-control-label" for="customSwitch3">Hakkımda bölümünü göster</label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch3" name="hakkimdaDurum" value="true">
+                                <label class="custom-control-label" for="customSwitch3">Hakkımda bölümünü göster</label>
+                            </div>
+                        </div>
+                    }
+
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>

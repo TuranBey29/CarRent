@@ -1,0 +1,194 @@
+﻿@model AnasayfaPageModel
+@{
+    ViewBag.Title = "Anasayfa";
+}
+<div class="banner-w3ls" id="home">
+    <!-- header -->
+    <!-- //header -->
+
+    <div class="clearfix"></div>
+    <h2>Sende bi araba seç</h2>
+    <h3>Senin için güzel araçlarımız var</h3>
+    <!--timer-->
+    <div class="agileits-timer">
+        <div class="main-title">
+            <button type="button" class="btn btn-outline-info btn-lg btn-block">En Uygun Aracı Bul</button>
+        </div>
+    </div>
+
+    <!--//timer-->
+    <div class="callbacks_container">
+        <ul class="rslides" id="slider3">
+            <li>
+                <div class="w3l_banner_info">
+                    <h4>En güzel arabanı bul</h4>
+                </div>
+            </li>
+            <li>
+                <div class="w3l_banner_info">
+                    <h4>Yolculukların eziyete dönüşmesin</h4>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+<!-- //banner -->
+<!-- bootstrap-pop-up -->
+<div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <section>
+                <div class="modal-body">
+                    <h3 class="agileinfo_sign">BEFRIEND</h3>
+                    <img src="images/g1.jpg" alt=" " class="img-responsive" />
+                    <p>
+                        Ut enim ad minima veniam, quis nostrum
+                        exercitationem ullam corporis suscipit laboriosam,
+                        nisi ut aliquid ex ea commodi consequatur.
+                        <i>" Quis autem vel eum iure reprehenderit qui in ea voluptate velit .</i>
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<!-- //bootstrap-pop-up -->
+@if (Model.SiteAyar.populerArabaDurum != null && Model.SiteAyar.populerArabaDurum == true)
+{
+    <!-- /banner-bottom -->
+    <div class="banner-bottom">
+        <!--//screen-gallery-->
+        <div class="wthree_title_agile">
+            <h3><span>Popüler</span>  Araçlar</h3>
+        </div>
+        <p class="sub_para">Araç sürme zamanı!</p>
+        <div class="inner_w3l_agile_grids">
+            <div class="sreen-gallery-cursual">
+
+                <div id="owl-demo" class="owl-carousel">
+                    @foreach (var item in Model.Arac)
+                    {
+                        if (item.reklam == true)
+                        {
+                            <div class="item-owl">
+                                <div class="test-review">
+                                    <img src="~/Content/images/@item.aracResim" class="img-responsive" alt="" />
+                                    <h5>@item.gunlukFiyat ₺</h5>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <!--//screen-gallery-->
+            </div>
+        </div>
+    </div>
+    <!-- //banner-bottom -->
+}
+@if (Model.SiteAyar.hakkimdaDurum == true)
+{
+    <!-- about -->
+    <div class="about" id="about">
+        <div class="container">
+            <div class="wthree_title_agile two">
+                <h3>Hakkımızda</h3>
+            </div>
+            <p class="sub_para two">It’s time to drive</p>
+            <div class="inner_w3l_agile_grids">
+                <div class="col-md-12 about-left-w3layouts">
+                    <p>
+                        @(Model.SiteAyar.hakkimdaYazi == null ? "N/a" : Model.SiteAyar.hakkimdaYazi)
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <!--about-section-->
+}
+
+@if (Model.SiteAyar.indirimDurum == true)
+{
+    <!-- about -->
+    <div class="services" id="service">
+        <div class="container">
+            <div class="wthree_title_agile">
+                <h3>Bugüne<span> Özel</span>  İndirimler</h3>
+            </div>
+            <p class="sub_para">Herkese bi araba!</p>
+            <div class="inner_w3l_agile_grids">
+                @foreach (var item in Model.Arac)
+                {
+                    if (item.indirim == true)
+                    {
+                        <div class="col-md-4 agileits_service_grid_btm_left" style="margin-bottom:15px">
+                            <div class="agileits_service_grid_btm_left1">
+                                <div class="agileits_service_grid_btm_left2">
+                                    <h5>@item.AracModel.AracMarka.marka - @item.AracModel.model</h5>
+
+                                    <p>Günlük @item.gunlukFiyat<sup><del>@(item.gunlukFiyat+100)</del></sup><span>₺</span>'den başlayan fiyatlarla</p>
+
+                                </div>
+                                <img src="~/Content/images/@item.aracResim" style="height:350px;object-fit: cover;" alt=" " class="img-responsive">
+                            </div>
+                        </div>
+                    }
+                }
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!--//service-section-->
+<!--//team-section-->
+<!--//team-section-->
+<!-- //gallery -->
+<!-- //gallery -->
+<!-- gallery -->
+<!-- /contact -->
+<!-- //contact -->
+<div class="w3_agile_address">
+    <div class="container">
+
+        <div class="w3ls_footer_grid">
+            <div class="col-md-4 w3ls_footer_grid_left">
+                <div class="w3ls_footer_grid_leftl">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                </div>
+                <div class="w3ls_footer_grid_leftr">
+                    <h4>Yerleşke:</h4>
+                    <p>İstanbul/Gaziosmanpaşa</p>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="col-md-4 w3ls_footer_grid_left">
+                <div class="w3ls_footer_grid_leftl email">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                </div>
+                <div class="w3ls_footer_grid_leftr ">
+                    <h4>Mail Adresi:</h4>
+                    <a href="mailto:iletisim@furkanlapcin.com">iletisim@furkanlapcin.com</a>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="col-md-4 w3ls_footer_grid_left">
+                <div class="w3ls_footer_grid_leftl">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                </div>
+                <div class="w3ls_footer_grid_leftr">
+                    <h4>Telefon Numarası:</h4>
+                    <p>(+90) 599 999 9999</p>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>

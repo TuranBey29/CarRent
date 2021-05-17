@@ -1,0 +1,162 @@
+﻿@model  AnasayfaPageModel
+@{
+    ViewBag.Title = "AracEkle";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+@section scripts
+    {
+    <script>
+        $('#AracMarka,#AracModel').select2({
+            theme: 'bootstrap4'
+        })
+    </script>
+}
+@if (TempData["mesaj"] != null)
+{
+    <div class="alert alert-info" role="alert">
+
+        @TempData["mesaj"]
+
+    </div>
+}
+<div class="card card-secondary">
+    <div class="card-header">
+        <h3 class="card-title">Araç ekle</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        @using (Html.BeginForm("AracEkle", "Panel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <form role="form">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- checkbox -->
+                        <label>Araç Fiyatlandırma</label>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </span>
+                                </div>
+                                <input name="gunlukFiyat" type="number" class="form-control" placeholder="Günlük Fiyat" autocomplete="off" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </span>
+                                </div>
+                                <input name="depozito" type="number" class="form-control" placeholder="Depozito" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- radio -->
+                        <div class="form-group">
+                            <label>Araç Km Sınır</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                </div>
+                                <input name="kmSinir" type="number" class="form-control" placeholder="Km Sınır" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Araba Marka</label>
+                            <select class="form-control select2bs4" id="AracMarka" style="width: 100%;" name="aracMarka">
+                                @foreach (var item in Model.AracMarka)
+                                {
+                                    <option value="@item.aracMarkaID">@item.marka</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Araba Model</label>
+                            <select class="form-control select2bs4" id="AracModel" style="width: 100%;" name="aracModelID">
+                                @foreach (var item in Model.AracModel)
+                                {
+                                    <option value="@item.aracModelID">@item.model</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- select -->
+                        <div class="form-group">
+                            <label>Yakıt Sınıf</label>
+                            <select class="custom-select" name="aracYakitTurID">
+                                @foreach (var item in Model.AracYakitTur)
+                                {
+                                    <option value="@item.aracYakitTurID">@item.tur</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- select -->
+                        <div class="form-group">
+                            <label>Vites Tür</label>
+                            <select class="custom-select" name="aracVitesTurID">
+                                @foreach (var item in Model.AracVitesTur)
+                                {
+                                    <option value="@item.aracVitesTurID">@item.vitesTur</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- select -->
+                        <div class="form-group">
+                            <label>Araç Sınıf</label>
+                            <select class="custom-select" name="aracSinifID">
+                                @foreach (var item in Model.AracSinif)
+                                {
+                                    <option value="@item.aracSinifID">@item.sinif</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="reklam" value="true">
+                        <label class="custom-control-label" for="customSwitch1">Popüler araç bölümünde göster</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch2" name="indirim" value="true">
+                        <label class="custom-control-label" for="customSwitch2">İndirimli araç bölümünde göster</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <!-- <label for="customFile">Custom File</label> -->
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile" name="aracResim">
+                                <label class="custom-file-label" for="customFile">Araç Resim</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
+        }
+    </div>
+    <!-- /.card-body -->
+</div>
