@@ -1,10 +1,10 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using System.Linq;
+
 namespace CarRent.Models
 {
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-
     public partial class CarRentContext : DbContext
     {
         public CarRentContext()
@@ -21,6 +21,7 @@ namespace CarRent.Models
         public virtual DbSet<Il> Il { get; set; }
         public virtual DbSet<Ilce> Ilce { get; set; }
         public virtual DbSet<Kullanici> Kullanici { get; set; }
+        public virtual DbSet<KullaniciArac> KullaniciArac { get; set; }
         public virtual DbSet<KullaniciYetki> KullaniciYetki { get; set; }
         public virtual DbSet<SiteAyar> SiteAyar { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
@@ -31,6 +32,11 @@ namespace CarRent.Models
             modelBuilder.Entity<Arac>()
                 .Property(e => e.aracResim)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Ilce>()
+                .HasMany(e => e.Arac)
+                .WithOptional(e => e.Ilce)
+                .HasForeignKey(e => e.bulunduguYer);
 
             modelBuilder.Entity<Kullanici>()
                 .Property(e => e.adres)

@@ -1,0 +1,59 @@
+﻿@model  List<CarRent.Models.KullaniciArac>
+@{
+    ViewBag.Title = "Araclarim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="services" id="service">
+    <div class="container">
+        <div class="wthree_title_agile">
+            <h3>Kiralanan Araclar</h3>
+        </div>
+        @if (TempData["Mesaj"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Mesaj"]
+            </div>
+        }
+        <div class="inner_w3l_agile_grids">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 agileits_service_grid_btm_left" style="margin-bottom:15px" data-toggle="modal" data-target="#arac_modal_@item.aracID">
+                    <div class="agileits_service_grid_btm_left1">
+                        <div class="agileits_service_grid_btm_left2">
+                            <h5>@item.Arac.AracModel.AracMarka.marka - @item.Arac.AracModel.model</h5>
+                        </div>
+                        <img src="~/Content/images/@item.Arac.aracResim" style="height:350px;object-fit: cover;" alt=" " class="img-responsive">
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="arac_modal_@item.aracID" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Araç Görüntüleme</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-5"><img src="/Content/images/@item.Arac.aracResim" style="width: 100%" alt="" class="img-responsive"></div>
+                                        <div class="col-md-7">
+                                            <b>Marka / Model:</b> @item.Arac.AracModel.AracMarka.marka / @item.Arac.AracModel.model <hr />
+                                            <b>Sınıf:</b> @item.Arac.AracSinif.sinif<hr />
+                                            <b>Başlangıç Tarihi:</b> @item.kiraBaslangicTarih <hr />
+                                            <b>Başlangıç Tarihi:</b> @item.kiraBitisTarih<hr />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            }
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>

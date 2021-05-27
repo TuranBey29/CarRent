@@ -143,6 +143,7 @@
     <Compile Include="Models\Il.cs" />
     <Compile Include="Models\Ilce.cs" />
     <Compile Include="Models\Kullanici.cs" />
+    <Compile Include="Models\KullaniciArac.cs" />
     <Compile Include="Models\KullaniciYetki.cs" />
     <Compile Include="Models\SiteAyar.cs" />
     <Compile Include="Models\sysdiagrams.cs" />
@@ -174,6 +175,8 @@
     <Content Include="Views\Panel\VitesTur.cshtml" />
     <Content Include="Views\Panel\YakitTur.cshtml" />
     <Content Include="Views\Panel\SiteAyar.cshtml" />
+    <Content Include="Views\Home\Araclar.cshtml" />
+    <Content Include="Views\Home\Araclarim.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -183,7 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Anasayfa\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

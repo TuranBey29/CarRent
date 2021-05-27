@@ -2,31 +2,42 @@
 @{
     ViewBag.Title = "Anasayfa";
 }
+
 <div class="banner-w3ls" id="home">
     <!-- header -->
     <!-- //header -->
-
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Mesaj"]
+        </div>
+    }
     <div class="clearfix"></div>
     <h2>Sende bi araba seç</h2>
     <h3>Senin için güzel araçlarımız var</h3>
     <!--timer-->
     <div class="agileits-timer">
         <div class="main-title">
-            <button type="button" class="btn btn-outline-info btn-lg btn-block">En Uygun Aracı Bul</button>
+            <a href="/Home/Araclar/" class="btn btn-warning btn-block">En Uygun Aracı Bul</a>
+            @*<div class="row">
+                    <select class="form-control custom-select" id="il">
+                        <option selected>Open this select menu</option>
+                        <option value="1">Adana</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+
+                    <select class="form-control custom-select" id="ilce">
+                        <option value=" ">Seçin..</option>
+                    </select>
+                </div>*@
         </div>
     </div>
-
-    <!--//timer-->
     <div class="callbacks_container">
         <ul class="rslides" id="slider3">
             <li>
                 <div class="w3l_banner_info">
                     <h4>En güzel arabanı bul</h4>
-                </div>
-            </li>
-            <li>
-                <div class="w3l_banner_info">
-                    <h4>Yolculukların eziyete dönüşmesin</h4>
                 </div>
             </li>
         </ul>
@@ -36,28 +47,6 @@
 </div>
 <!-- //banner -->
 <!-- bootstrap-pop-up -->
-<div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <section>
-                <div class="modal-body">
-                    <h3 class="agileinfo_sign">BEFRIEND</h3>
-                    <img src="images/g1.jpg" alt=" " class="img-responsive" />
-                    <p>
-                        Ut enim ad minima veniam, quis nostrum
-                        exercitationem ullam corporis suscipit laboriosam,
-                        nisi ut aliquid ex ea commodi consequatur.
-                        <i>" Quis autem vel eum iure reprehenderit qui in ea voluptate velit .</i>
-                    </p>
-                </div>
-            </section>
-        </div>
-    </div>
-</div>
 <!-- //bootstrap-pop-up -->
 @if (Model.SiteAyar.populerArabaDurum != null && Model.SiteAyar.populerArabaDurum == true)
 {
@@ -76,7 +65,7 @@
                     {
                         if (item.reklam == true)
                         {
-                            <div class="item-owl">
+                            <div class="item-owl" data-toggle="modal" data-target="#arac_reklam_@item.aracID">
                                 <div class="test-review">
                                     <img src="~/Content/images/@item.aracResim" class="img-responsive" alt="" />
                                     <h5>@item.gunlukFiyat ₺</h5>
@@ -90,6 +79,57 @@
         </div>
     </div>
     <!-- //banner-bottom -->
+
+
+    foreach (var item in Model.Arac)
+    {
+        if (item.reklam == true)
+        {
+            <!-- Modal -->
+            <div class="modal fade" id="arac_reklam_@item.aracID" tabindex="-1" role="dialog" aria-hidden="true">
+                @using (Html.BeginForm("AracKirala"))
+                {
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Araç Görüntüleme</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-5"><img src="/Content/images/@item.aracResim" style="width: 100%" alt="" class="img-responsive"></div>
+                                    <div class="col-md-7">
+                                        <b>Marka / Model:</b> @item.AracModel.AracMarka.marka / @item.AracModel.model <hr />
+                                        <b>Sınıf:</b> @item.AracSinif.sinif <hr />
+                                        @if (Session["Kullanici"] != null)
+                                        {
+                                            <input type="hidden" name="id" value="@item.aracID" />
+                                            <label>Başlangıç Gün</label>
+                                            <input type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" name="baslangic" /><hr />
+                                            <label>Teslim Gün</label>
+                                            <input type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" name="bitis" /><hr />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                @if (Session["Kullanici"] != null)
+                                {
+                                    <input href="/Home/AracKirala/@item.aracID" type="submit" class="btn btn-primary" value="Kirala" />
+                                }
+                                else
+                                {
+                                    <p style="color: red;">Kiralamak için giriş yapınız.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
 }
 @if (Model.SiteAyar.hakkimdaDurum == true)
 {
@@ -123,11 +163,12 @@
             </div>
             <p class="sub_para">Herkese bi araba!</p>
             <div class="inner_w3l_agile_grids">
+
                 @foreach (var item in Model.Arac)
                 {
                     if (item.indirim == true)
                     {
-                        <div class="col-md-4 agileits_service_grid_btm_left" style="margin-bottom:15px">
+                        <div class="col-md-4 agileits_service_grid_btm_left" style="margin-bottom:15px" data-toggle="modal" data-target="#arac_modal_@item.aracID">
                             <div class="agileits_service_grid_btm_left1">
                                 <div class="agileits_service_grid_btm_left2">
                                     <h5>@item.AracModel.AracMarka.marka - @item.AracModel.model</h5>
@@ -137,6 +178,50 @@
                                 </div>
                                 <img src="~/Content/images/@item.aracResim" style="height:350px;object-fit: cover;" alt=" " class="img-responsive">
                             </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="arac_modal_@item.aracID" tabindex="-1" role="dialog" aria-hidden="true">
+                            @using (Html.BeginForm("AracKirala", "Home", FormMethod.Post))
+                            {
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Araç Görüntüleme</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-5"><img src="/Content/images/@item.aracResim" style="width: 100%" alt="" class="img-responsive"></div>
+                                                <div class="col-md-7">
+                                                    <b>Marka / Model:</b> @item.AracModel.AracMarka.marka / @item.AracModel.model <hr />
+                                                    <b>Sınıf:</b> @item.AracSinif.sinif <hr />
+                                                    @if (Session["Kullanici"] != null)
+                                                    {
+                                                        <input type="hidden" name="id" value="@item.aracID" />
+                                                        <label>Başlangıç Gün</label>
+                                                        <input type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" name="baslangic" /><hr />
+                                                        <label>Teslim Gün</label>
+                                                        <input type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" name="bitis" /><hr />
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            @if (Session["Kullanici"] != null)
+                                            {
+                                                <input href="/Home/AracKirala/@item.aracID" type="submit" class="btn btn-primary" value="Kirala" />
+                                            }
+                                            else
+                                            {
+                                                <p style="color: red;">Kiralamak için giriş yapınız.</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     }
                 }
@@ -191,4 +276,44 @@
             <div class="clearfix"> </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="KayitOl" tabindex="-1" role="dialog" aria-hidden="true">
+    @using (Html.BeginForm("KayitOl", "Login", FormMethod.Post))
+    {
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kayıt Ol</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Ad</span>
+                    </div>
+                    <input type="text" name="ad" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing">
+                    <br />
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Soyad</span>
+                    </div>
+                    <input type="text" name="soyad" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing">
+                    <br />
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">E-Posta</span>
+                    </div>
+                    <input type="text" name="eposta" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing">
+                    <br />
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Şifre</span>
+                    </div>
+                    <input type="password" name="sifre" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                </div>
+            </div>
+        </div>
+    }
 </div>

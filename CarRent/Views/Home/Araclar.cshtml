@@ -1,0 +1,80 @@
+﻿@model  List<CarRent.Models.Arac>
+@{
+    ViewBag.Title = "Araclar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="services" id="service">
+    <div class="container">
+        <div class="wthree_title_agile">
+            <h3>Bugüne<span> Özel</span>  İndirimler</h3>
+        </div>
+        <p class="sub_para">Herkese bi araba!</p>
+        @if (TempData["Mesaj"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Mesaj"]
+            </div>
+        }
+        <div class="inner_w3l_agile_grids">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 agileits_service_grid_btm_left" style="margin-bottom:15px" data-toggle="modal" data-target="#arac_modal_@item.aracID">
+                    <div class="agileits_service_grid_btm_left1">
+                        <div class="agileits_service_grid_btm_left2">
+                            <h5>@item.AracModel.AracMarka.marka - @item.AracModel.model</h5>
+                        </div>
+                        <img src="~/Content/images/@item.aracResim" style="height:350px;object-fit: cover;" alt=" " class="img-responsive">
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="arac_modal_@item.aracID" tabindex="-1" role="dialog" aria-hidden="true">
+                    @using (Html.BeginForm("AracKirala", "Home", FormMethod.Post))
+                    {
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Araç Görüntüleme</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-5"><img src="/Content/images/@item.aracResim" style="width: 100%" alt="" class="img-responsive"></div>
+                                        <div class="col-md-7">
+                                            <b>Marka / Model:</b> @item.AracModel.AracMarka.marka / @item.AracModel.model <hr />
+                                            <b>Sınıf:</b> @item.AracSinif.sinif <hr />
+                                            <b>Günlük Ücret:</b> @item.gunlukFiyat ₺ <hr />
+                                            @if (Session["Kullanici"] != null)
+                                            {
+                                                <input type="hidden" name="id" value="@item.aracID" />
+                                                <label>Başlangıç Gün</label>
+                                                <input type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" name="baslangic" /><hr />
+                                                <label>Teslim Gün</label>
+                                                <input type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" name="bitis" /><hr />
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    @if (Session["Kullanici"] != null)
+                                    {
+                                        <input href="/Home/AracKirala/@item.aracID" type="submit" class="btn btn-primary" value="Kirala" />
+                                    }
+                                    else
+                                    {
+                                        <p style="color: red;">Kiralamak için giriş yapınız.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>

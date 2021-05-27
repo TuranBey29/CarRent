@@ -9,6 +9,12 @@ namespace CarRent.Models
     [Table("Arac")]
     public partial class Arac
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Arac()
+        {
+            KullaniciArac = new HashSet<KullaniciArac>();
+        }
+
         public int aracID { get; set; }
 
         public int? aracModelID { get; set; }
@@ -34,6 +40,8 @@ namespace CarRent.Models
 
         public bool? indirim { get; set; }
 
+        public int? bulunduguYer { get; set; }
+
         public virtual AracModel AracModel { get; set; }
 
         public virtual AracSinif AracSinif { get; set; }
@@ -41,5 +49,10 @@ namespace CarRent.Models
         public virtual AracVitesTur AracVitesTur { get; set; }
 
         public virtual AracYakitTur AracYakitTur { get; set; }
+
+        public virtual Ilce Ilce { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KullaniciArac> KullaniciArac { get; set; }
     }
 }

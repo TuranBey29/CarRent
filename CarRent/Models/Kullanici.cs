@@ -12,6 +12,7 @@ namespace CarRent.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Kullanici()
         {
+            KullaniciArac = new HashSet<KullaniciArac>();
             KullaniciYetki = new HashSet<KullaniciYetki>();
         }
 
@@ -47,6 +48,9 @@ namespace CarRent.Models
         public DateTime? kayitTarih { get; set; }
 
         public bool? uyelikDurum { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KullaniciArac> KullaniciArac { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<KullaniciYetki> KullaniciYetki { get; set; }

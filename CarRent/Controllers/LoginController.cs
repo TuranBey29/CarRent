@@ -21,34 +21,67 @@ namespace CarRent.Controllers
         [HttpPost]
         public ActionResult Index(string eposta, string sifre)
         {
-            
+
             Kullanici k = db.Kullanici.Where(x => x.eposta == eposta && x.sifre == sifre).SingleOrDefault();
             if (k == null)
             {
-                ViewBag.Sonuc = "Böyle bir kullanıcı yoktur.";
+                TempData["Mesaj"] = "Böyle bir kullanıcı yoktur.";
                 return View();
             }
             else
             {
-                KullaniciYetki kullaniciYetki = db.KullaniciYetki.Where(x => x.kullaniciID == k.kullaniciID).FirstOrDefault();
-                if (kullaniciYetki.yetkiID == 1)
+                List<KullaniciYetki> kullaniciYetki = db.KullaniciYetki.Where(x => x.kullaniciID == k.kullaniciID).ToList();
+                foreach (var item in kullaniciYetki)
                 {
-                    Session["Yonetici"] = k;
+                    if (item.yetkiID == 1)
+                    {
+                        Session["Yonetici"] = k;
+                    }
+                    else if (item.yetkiID == 2)
+                    {
+                        Session["Kullanici"] = k;
+                    }
                 }
-                else
-                {
-                    Session["Kullanici"] = k;
-                }
-                
-                Response.Redirect("/Panel/Index");
             }
-            return View();
+            return RedirectToAction("Anasayfa", "Home");
         }
 
         public ActionResult Cikis()
         {
             Session.Abandon();
             return Redirect("/Home/Anasayfa");
+        }
+
+        public ActionResult KayitOl(string ad, string soyad, string eposta, string sifre)
+        {
+
+            if (eposta != null && sifre != null && ad != null && soyad != null)
+            {
+                Kullanici kul = new Kullanici()
+                {
+                    ad = ad,
+                    soyad = soyad,
+                    eposta = eposta,
+                    sifre = sifre
+                };
+                KullaniciYetki kullaniciYetki = new KullaniciYetki()
+                {
+                    kullaniciID = kul.kullaniciID,
+                    yetkiID = 2
+                };
+
+                db.Kullanici.Add(kul);
+                db.KullaniciYetki.Add(kullaniciYetki);
+                db.SaveChanges();
+
+                TempData["Mesaj"] = "Kayıt Başarıyla Yapıldı";
+                return RedirectToAction("Anasayfa", "Home");
+            }
+            else
+            {
+                TempData["Mesaj"] = "Ad soyad , Mail veya Şifre boş olamaz";
+                return RedirectToAction("Anasayfa", "Home");
+            }
         }
 
     }

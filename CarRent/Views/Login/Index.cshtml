@@ -23,10 +23,10 @@
 
         <div class="design-w3l">
             <div class="mail-form-agile">
-                @if (ViewBag.Sonuc != null)
+                @if (TempData["Mesaj"] != null)
                 {
                     <div class="alert alert-danger">
-                        @ViewBag.Sonuc
+                        @TempData["Mesaj"]
                     </div>
                 }
                 <form action="#" method="post">
